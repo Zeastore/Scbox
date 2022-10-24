@@ -4,7 +4,7 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
 
 BURIQ () {
-    curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip > /root/tmp
+    curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip > /root/tmp
     data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
     for user in "${data[@]}"
     do
@@ -22,7 +22,7 @@ BURIQ () {
 }
 
 MYIP=$(curl -sS ipv4.icanhazip.com)
-Name=$(curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip | grep $MYIP | awk '{print $2}')
+Name=$(curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip | grep $MYIP | awk '{print $2}')
 echo $Name > /usr/local/etc/.$Name.ini
 CekOne=$(cat /usr/local/etc/.$Name.ini)
 
@@ -39,7 +39,7 @@ fi
 
 PERMISSION () {
     MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip | awk '{print $4}' | grep $MYIP)
+    IZIN=$(curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip | awk '{print $4}' | grep $MYIP)
     if [ "$MYIP" = "$IZIN" ]; then
     Bloman
     else
@@ -65,18 +65,18 @@ if [ "$res" = "Expired" ]; then
 Exp="\e[36mExpired\033[0m"
 rm -f /home/needupdate > /dev/null 2>&1
 else
-Exp=$(curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip | grep $MYIP | awk '{print $3}')
+Exp=$(curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip | grep $MYIP | awk '{print $3}')
 fi
 clear
 echo -e "\e[36m╒════════════════════════════════════════════════════╕\033[0m"
-echo -e " \E[0;41;36m                  BAHENOL MENU                      \E[0m"
+echo -e " \E[0;41;36m                  PREMIUM MENU                      \E[0m"
 echo -e "\e[36m╘════════════════════════════════════════════════════╛\033[0m"
 uphours=`uptime -p | awk '{print $2,$3}' | cut -d , -f1`
 upminutes=`uptime -p | awk '{print $4,$5}' | cut -d , -f1`
 uptimecek=`uptime -p | awk '{print $6,$7}' | cut -d , -f1`
 cekup=`uptime -p | grep -ow "day"`
 IPVPS=$(curl -s ipinfo.io/ip )
-serverV=$( curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/versi)
+serverV=$( curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/versi)
 
 if [ "$cekup" = "day" ]; then
 echo    -e   "System Uptime   :  $uphours $upminutes $uptimecek"
@@ -130,7 +130,7 @@ echo -e "\033[0;33mVersion : $(cat /opt/.ver) Update available to $serverV\e[0m"
 echo -e "\e[36m╒════════════════════════════════════════════════════╕\033[0m"
 echo ""
 echo -e "[ \033[0;31mChangelog\033[0m ]"
-curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/clgshow
+curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/clgshow
 echo -e "
 "
 fi
@@ -175,8 +175,8 @@ if [[ $(cat /opt/.ver) = $serverV ]] > /dev/null 2>&1; then
        menu
     fi
 else
-    if [[ $x -eq 999 ]]; then
-       wget -q -O /usr/bin/update-script "https://raw.githubusercontent.com/tridebleng/Scbox/main/dll/system/update-script.sh" && chmod +x /usr/bin/update-script
+    if [[ $x -eq 69 ]]; then
+       wget -q -O /usr/bin/update-script "https://raw.githubusercontent.com/Zeastore/Scbox/main/dll/system/update-script.sh" && chmod +x /usr/bin/update-script
        screen -S upds update-script
        menu
     elif [[ $x -eq 1 ]]; then
