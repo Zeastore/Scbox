@@ -192,7 +192,7 @@ fi
 fi
 
 echo ""
-wget -q https://gantilink.com/dependencies
+wget -q https://raw.githubusercontent.com/Zeastore/Scbox/main/dependencies
 chmod +x dependencies 
 screen -S depen ./dependencies
 rm dependencies
