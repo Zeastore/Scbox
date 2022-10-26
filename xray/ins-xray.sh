@@ -4,7 +4,7 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
 
 BURIQ () {
-    curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip > /root/tmp
+    curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip > /root/tmp
     data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
     for user in "${data[@]}"
     do
@@ -22,7 +22,7 @@ BURIQ () {
 }
 
 MYIP=$(curl -sS ipv4.icanhazip.com)
-Name=$(curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip | grep $MYIP | awk '{print $2}')
+Name=$(curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip | grep $MYIP | awk '{print $2}')
 echo $Name > /usr/local/etc/.$Name.ini
 CekOne=$(cat /usr/local/etc/.$Name.ini)
 
@@ -39,7 +39,7 @@ fi
 
 PERMISSION () {
     MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/tridebleng/Scbox/main/ip | awk '{print $4}' | grep $MYIP)
+    IZIN=$(curl -sS https://raw.githubusercontent.com/Zeastore/Scbox/main/ip | awk '{print $4}' | grep $MYIP)
     if [ "$MYIP" = "$IZIN" ]; then
     Bloman
     else
@@ -119,17 +119,19 @@ touch /var/log/xray/error2.log
 # / / Ambil Xray Core Version Terbaru
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.5.6
 
-
-
-## crt xray
-systemctl stop nginx
-mkdir /root/.acme.sh
-curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
-chmod +x /root/.acme.sh/acme.sh
+##Generate acme certificate
+curl https://get.acme.sh | sh
+alias acme.sh=~/.acme.sh/acme.sh
 /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
-/root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+#/root/.acme.sh/acme.sh --issue -d "${domain}" --standalone --keylength ec-2048
+/root/.acme.sh/acme.sh --issue -d "${domain}" --standalone --keylength ec-256
+/root/.acme.sh/acme.sh --install-cert -d "${domain}" --ecc \
+--fullchain-file /etc/xray/xray.crt \
+--key-file /etc/xray/xray.key
+chown -R nobody:nogroup /etc/xray
+chmod 644 /etc/xray/xray.crt
+chmod 644 /etc/xray/xray.key
 
 # nginx renew ssl
 echo -n '#!/bin/bash
@@ -482,22 +484,22 @@ systemctl restart trojan-go >/dev/null 2>&1
 
 sleep 1
 echo -e "[ ${green}ok${NC} ] Downloading files for trojan-go... "
-wget -q -O /usr/bin/add-ws "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/add-ws.sh" && chmod +x /usr/bin/add-ws
-wget -q -O /usr/bin/add-vless "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/add-vless.sh" && chmod +x /usr/bin/add-vless
-wget -q -O /usr/bin/add-tr "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/add-tr.sh" && chmod +x /usr/bin/add-tr
-wget -q -O /usr/bin/del-user "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/del-ws.sh" && chmod +x /usr/bin/del-ws
-wget -q -O /usr/bin/cek-user "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/cek-ws.sh" && chmod +x /usr/bin/cek-ws
-wget -q -O /usr/bin/renew-user "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/renew-ws.sh" && chmod +x /usr/bin/renew-ws
-wget -q -O /usr/bin/trial-ws "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/trial-ws.sh" && chmod +x /usr/bin/trial-ws
-wget -q -O /usr/bin/trial-vless "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/trial-vless.sh" && chmod +x /usr/bin/trial-vless
-wget -q -O /usr/bin/trial-tr "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/trial-tr.sh" && chmod +x /usr/bin/trial-tr
-wget -q -O /usr/bin/renewcert "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/cert.sh" && chmod +x /usr/bin/renewcert
-wget -q -O /usr/bin/v2ray-menu "https://raw.githubusercontent.com/tridebleng/Scbox/main/menu_all/v2ray-menu.sh" && chmod +x /usr/bin/v2ray-menu
-wget -q -O /usr/bin/trojan-menu "https://raw.githubusercontent.com/tridebleng/Scbox/main/menu_all/trojan-menu.sh" && chmod +x /usr/bin/trojan-menu
-wget -q -O /usr/bin/ssgrpc-menu "https://raw.githubusercontent.com/tridebleng/Scbox/main/menu_all/ssgrpc-menu.sh" && chmod +x /usr/bin/ssgrpc-menu
-wget -q -O /usr/bin/add-ssws "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/add-ssws.sh" && chmod +x /usr/bin/add-ssws
-wget -q -O /usr/bin/del-ssws "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/del-ssws.sh" && chmod +x /usr/bin/del-ssws
-wget -q -O /usr/bin/renew-ssws "https://raw.githubusercontent.com/tridebleng/Scbox/main/xray/renew-ssws.sh" && chmod +x /usr/bin/renew-ssws
+wget -q -O /usr/bin/add-ws "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/add-ws.sh" && chmod +x /usr/bin/add-ws
+wget -q -O /usr/bin/add-vless "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/add-vless.sh" && chmod +x /usr/bin/add-vless
+wget -q -O /usr/bin/add-tr "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/add-tr.sh" && chmod +x /usr/bin/add-tr
+wget -q -O /usr/bin/del-user "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/del-ws.sh" && chmod +x /usr/bin/del-ws
+wget -q -O /usr/bin/cek-user "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/cek-ws.sh" && chmod +x /usr/bin/cek-ws
+wget -q -O /usr/bin/renew-user "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/renew-ws.sh" && chmod +x /usr/bin/renew-ws
+wget -q -O /usr/bin/trial-ws "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/trial-ws.sh" && chmod +x /usr/bin/trial-ws
+wget -q -O /usr/bin/trial-vless "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/trial-vless.sh" && chmod +x /usr/bin/trial-vless
+wget -q -O /usr/bin/trial-tr "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/trial-tr.sh" && chmod +x /usr/bin/trial-tr
+wget -q -O /usr/bin/renewcert "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/cert.sh" && chmod +x /usr/bin/renewcert
+wget -q -O /usr/bin/v2ray-menu "https://raw.githubusercontent.com/Zeastore/Scbox/main/menu_all/v2ray-menu.sh" && chmod +x /usr/bin/v2ray-menu
+wget -q -O /usr/bin/trojan-menu "https://raw.githubusercontent.com/Zeastore/Scbox/main/menu_all/trojan-menu.sh" && chmod +x /usr/bin/trojan-menu
+wget -q -O /usr/bin/ssgrpc-menu "https://raw.githubusercontent.com/Zeastore/Scbox/main/menu_all/ssgrpc-menu.sh" && chmod +x /usr/bin/ssgrpc-menu
+wget -q -O /usr/bin/add-ssws "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/add-ssws.sh" && chmod +x /usr/bin/add-ssws
+wget -q -O /usr/bin/del-ssws "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/del-ssws.sh" && chmod +x /usr/bin/del-ssws
+wget -q -O /usr/bin/renew-ssws "https://raw.githubusercontent.com/Zeastore/Scbox/main/xray/renew-ssws.sh" && chmod +x /usr/bin/renew-ssws
 sleep 1
 yellow() { echo -e "\\033[33;1m${*}\\033[0m"; }
 yellow "xray/Vmess"
